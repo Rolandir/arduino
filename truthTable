@@ -1,17 +1,15 @@
   checkFrontDistance
-    if frontDistanceCm < maxFrontDistance
-      checkLeftDistance, checkRightDistance
-      (leftDistanceCm < rightDistanceCm) ? moveRight : moveLeft
-    else moveForward();
+  if frontDistanceCm < maxFrontDistance
+    checkLeftDistance, checkRightDistance
+    (leftDistanceCm < rightDistanceCm) ? moveRight : moveLeft
+  else moveForward();
 
   checkLeftDistance
   if leftDistanceCm < maxLeftDistance
-    checkLeftDistance
-    checkRightDistance
+    checkLeftDistance, checkRightDistance
     (leftDistanceCm > rightDistanceCm) ? moveForward : moveRight
 
   checkRightDistance
   if rightDistanceCm < maxRightDistance
-    checkRightDistance
-    checkLeftDistance
+    checkRightDistance, checkLeftDistance
     (rightDistanceCm > leftDistanceCm) ? moveForward : moveLeft
