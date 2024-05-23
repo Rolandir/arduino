@@ -2,7 +2,8 @@
   if frontDistanceCm < maxFrontDistance
     checkLeftDistance, checkRightDistance
     (leftDistanceCm < rightDistanceCm) ? moveRight : moveLeft
-  else moveForward();
+    moveForward
+  else moveForward
 
   checkLeftDistance
   if leftDistanceCm < maxLeftDistance
