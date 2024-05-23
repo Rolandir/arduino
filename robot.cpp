@@ -1,3 +1,5 @@
+#include <Newping.h>
+
 const int frontEchoPin = 7;
 const int frontTriggerPin = 6;
 const int leftEchoPin = 11;
@@ -11,6 +13,7 @@ const int motorR2 = 5;
 volatile float maxFrontDistance = 25.00;
 volatile float frontDuration, frontDistanceCm, leftDuration, leftDistanceCm, rightDuration, rightDistanceCm;
 volatile float maxLeftDistance, maxRightDistance = 20.00;
+
 void setup() {
   // serial
   Serial.begin(9600);
