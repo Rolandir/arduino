@@ -1,7 +1,8 @@
   checkFrontDistance
   if frontDistanceCm < maxFrontDistance
+    stop
     checkLeftDistance, checkRightDistance
-    (leftDistanceCm < rightDistanceCm) ? moveRight : moveLeft
+    (leftDistanceCm < rightDistanceCm) ? turnRight : turnLeft
   moveForward
 
 ============================================
