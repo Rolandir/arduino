@@ -1,0 +1,26 @@
+  checkFrontDistance
+    frontDistanceCm < maxFrontDistance ? checkLeftDistance : checkRightDistance
+    leftDistanceCm < rightDistanceCm ? moveRight() : (leftDistanceCm > rightDistanceCm ? moveLeft)
+  else {
+    moveForward();
+  }
+  checkLeftDistance();
+  if (leftDistanceCm < maxLeftDistance) {
+    checkLeftDistance();
+    checkRightDistance();
+    if (leftDistanceCm > rightDistanceCm)
+      moveForward();
+    else if (leftDistanceCm < rightDistanceCm) {
+      moveRight();
+    }
+  }
+  checkRightDistance();
+  if (rightDistanceCm < maxRightDistance) {
+    checkRightDistance();
+    checkLeftDistance();
+    if (rightDistanceCm > leftDistanceCm)
+      moveForward();
+    else if (rightDistanceCm < leftDistanceCm) {
+      moveLeft();
+    }
+  }
