@@ -25,7 +25,7 @@ TODO:
 
 improve intelligence
 
-add another sensor
+add another sensor / Better way is to use a LIDAR (study)
 
 add servo motor for each sensor (array code)
 
