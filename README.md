@@ -28,3 +28,5 @@ improve intelligence
 add another sensor
 
 add servo motor for each sensor
+
+increase speed
