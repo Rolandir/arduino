@@ -30,3 +30,11 @@ add another sensor
 add servo motor for each sensor
 
 increase speed
+
+
+Tool:
+
+Visual Studio Code
+
+PlatformIO plugin
+
