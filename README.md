@@ -42,3 +42,4 @@ Visual Studio Code
 
 PlatformIO plugin
 
+Arduino support
