@@ -31,6 +31,8 @@ add servo motor for each sensor (array code)
 
 use interrupt
 
+package the robot with new chassis (2 levels)
+
 increase speed
 
 
