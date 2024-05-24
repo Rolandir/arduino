@@ -29,6 +29,8 @@ add another sensor
 
 add servo motor for each sensor (array code)
 
+use interrupt
+
 increase speed
 
 
