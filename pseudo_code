@@ -1,3 +1,5 @@
+TODO: rework
+
   checkFrontDistance
   if frontDistanceCm < maxFrontDistance
     stop
