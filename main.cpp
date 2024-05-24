@@ -118,9 +118,8 @@ void DoProcess(int distance) {
     delay(666);
     stopMotors();
   }
-  //else {
-    DoGo(MARCHE_AVANT);
-  //}
+
+  DoGo(MARCHE_AVANT);
 }
 
 void DoGo(Direction direction) {
