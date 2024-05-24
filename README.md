@@ -27,12 +27,12 @@ improve intelligence
 
 add another sensor
 
-add servo motor for each sensor
+add servo motor for each sensor (array code)
 
 increase speed
 
 
-Tool:
+TOOL:
 
 Visual Studio Code
 
