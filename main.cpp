@@ -3,11 +3,12 @@
 
 const int TRIG = A2;
 const int ECHO = A3;
-long lecture_echo;
 
-// the servo.h disables pwm output on pins 9 and 10 when a servo is initalised
-// pwm is on pin 9 so nothing will happen
-// the pwm is blocked so no speed signal is being sent
+//using the servo.h disables pwm output on pins 9 and 10 when a servo is initalised
+//your pwm is on pin 9 so nothing will happen.
+//the pwm is blocked so no speed signal is being sent
+//Move the enA from pin9 to another pwm pin
+//https://www.reddit.com/r/arduino/comments/nvdfef/l298n_with_dc_motor_stops_working_when_i_attach_a/?rdt=41577
 #define borneENA        5
 #define borneIN1        4
 #define borneIN2        8
@@ -17,34 +18,27 @@ long lecture_echo;
 
 #define servoMOTOR      11
 
-const int LeftMotorForward   = 6;
-const int LeftMotorBackward  = 7;
-const int RightMotorBackward = 4;
-const int RightMotorForward  = 8;
-
 const int delayUpdateSpeed = 20;
 const int minimalSpeed  = 99;
 const int maximalSpeed  = 151;
 
-#define sonar_2 A5
+#define SONAR_2 A5
 
-enum Direction {MARCHE_AVANT = 'V',  MARCHE_ARRIERE = 'R', TURN_RIGHT = 'T', TURN_LEFT = 'L'};
+enum Direction {GO_FORWARD = 'V',  GO_BACKWARD = 'R', TURN_RIGHT = 'T', TURN_LEFT = 'L'};
 int distance = 100;
 
 #define maximum_distance 200
 NewPing sonar(TRIG, ECHO, maximum_distance);
-NewPing sonar2(sonar_2, sonar_2, maximum_distance);
+NewPing sonar2(SONAR_2, SONAR_2, maximum_distance);
 Servo servo_motor;
 
 void updateMotorSpeed(int speed);
-void updateBridgeConfiguration(Direction direction);
+void updateBridgeConfiguration(Direction);
 int  readPing();
-int  lookRight();
-int  lookLeft();
 void stopMotors();
 void DoGo(Direction);
 void DoGoWithStepping(Direction);
-void DoProcess(int);
+void DoProcess(int distance);
 int  lookSide(Direction);
 
 void setup() {
@@ -81,7 +75,7 @@ void loop() {
   if (sonarbis==0){
     sonarbis=250;
   }
-  Serial.print(">sonarbis:");
+  Serial.print(">sonar_2:");
   Serial.println(sonarbis);
   distance=min(sonarbis, distance);
 
@@ -93,15 +87,15 @@ void DoProcess(int distance) {
     int distanceLeft = 0;
     int distanceRight = 0;
     stopMotors();
-    delay(200);
-    DoGo(MARCHE_ARRIERE);
+    delay(50);
+    DoGo(GO_BACKWARD);
     delay(400);
     stopMotors();
-    delay(200);
+    delay(50);
     distanceRight = lookSide(TURN_RIGHT);
     Serial.print(">DistanceRight:");
     Serial.println(distanceRight);
-    delay(300);
+    delay(200);
     distanceLeft = lookSide(TURN_LEFT);
     Serial.print(">DistanceLeft:");
     Serial.println(distanceLeft);  
@@ -119,7 +113,8 @@ void DoProcess(int distance) {
     stopMotors();
   }
 
-  DoGo(MARCHE_AVANT);
+  DoGo(GO_FORWARD);
+
 }
 
 void DoGo(Direction direction) {
@@ -146,7 +141,7 @@ void DoGoWithStepping(Direction direction) {
 
 void updateBridgeConfiguration(Direction direction) {
 
-  if (direction == MARCHE_ARRIERE) {
+  if (direction == GO_BACKWARD) {
     digitalWrite(borneIN1, HIGH);
     digitalWrite(borneIN2, LOW);
     digitalWrite(borneIN3, HIGH);
@@ -154,7 +149,7 @@ void updateBridgeConfiguration(Direction direction) {
     return;
   }
   
-  if (direction == MARCHE_AVANT) {
+  if (direction == GO_FORWARD) {
     digitalWrite(borneIN1, LOW);
     digitalWrite(borneIN2, HIGH);
     digitalWrite(borneIN3, LOW);
