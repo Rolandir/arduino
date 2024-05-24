@@ -1,6 +1,6 @@
 # robot
 
-Arduino project
+Arduino project:
 
 4 wheels and DC motors
 
