@@ -28,7 +28,7 @@ const int delayUpdateSpeed = 20;
 const int minimalSpeed  = 99;
 const int maximalSpeed  = 151;
 
-#define sonar_2 2
+#define sonar_2 A5
 
 enum Direction {MARCHE_AVANT = 'V',  MARCHE_ARRIERE = 'R', TURN_RIGHT = 'T', TURN_LEFT = 'L'};
 int distance = 100;
@@ -80,12 +80,14 @@ void loop() {
   Serial.println(distance);
 
   int sonarbis=sonar2.ping_cm();
+  if (sonarbis==0){
+    sonarbis=250;
+  }
   Serial.print(">sonarbis:");
   Serial.println(sonarbis);
   distance=min(sonarbis, distance);
 
   DoProcess(distance);
-
 }
 
 void DoProcess(int distance) {
@@ -107,25 +109,25 @@ void DoProcess(int distance) {
     Serial.println(distanceLeft);  
     delay(300);
     if (distanceRight > distanceLeft && distanceRight > distance) {
-      Serial.print("Turn right");
+      Serial.println("Turn right");
       updateBridgeConfiguration(TURN_RIGHT);
     }
     else if (distanceLeft > distance) {
-      
-      Serial.print("Turn left");
+      Serial.println("Turn left");
       updateBridgeConfiguration(TURN_LEFT);
     }
     updateMotorSpeed(maximalSpeed);
-    delay(500);
+    delay(666);
     stopMotors();
   }
-  else {
+  //else {
     DoGo(MARCHE_AVANT);
-  }
+  //}
 }
 
 void DoGo(Direction direction) {
-  Serial.println("Forward");
+  Serial.print("DoGo ");
+  Serial.println((char)direction);
   updateBridgeConfiguration(direction);
   updateMotorSpeed(minimalSpeed);
 }
