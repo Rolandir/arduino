@@ -5,11 +5,9 @@ const int TRIG = A2;
 const int ECHO = A3;
 long lecture_echo;
 
-//using the servo.h disables pwm output on pins 9 and 10 when a servo is initalised
-//your pwm is on pin 9 so nothing will happen.
-//the pwm is blocked so no speed signal is being sent
-//Move the enA from pin9 to another pwm pin
-//https://www.reddit.com/r/arduino/comments/nvdfef/l298n_with_dc_motor_stops_working_when_i_attach_a/?rdt=41577
+// the servo.h disables pwm output on pins 9 and 10 when a servo is initalised
+// pwm is on pin 9 so nothing will happen
+// the pwm is blocked so no speed signal is being sent
 #define borneENA        5
 #define borneIN1        4
 #define borneIN2        8
