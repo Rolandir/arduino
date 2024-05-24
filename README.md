@@ -17,3 +17,14 @@ Arduino project
 2 18650 Li-ion Battery, one holder with a switch on/off
 
 1 chassis 3D printed with Snapmaker J1S PLA
+
+
+
+
+TODO:
+
+improve intelligence
+
+add another sensor
+
+add servo motor for each sensor
