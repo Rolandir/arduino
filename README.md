@@ -14,6 +14,6 @@ Arduino project
 
 2 18650 Rechargeable Battery 3.7V
 
-2 18650 Li-ion Battery Holder with switch on/off
+2 18650 Li-ion Battery, one holder with a switch on/off
 
 1 chassis 3D printed with Snapmaker J1S PLA
