@@ -8,7 +8,7 @@ Arduino project:
 
 1 L298N motor driver module
 
-2 Ultrasonic sensor (HC-SR04)
+3 Ultrasonic sensor (HC-SR04)
 
 1 SG90 servo motor
 
