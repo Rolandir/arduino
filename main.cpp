@@ -28,19 +28,19 @@ const int maximalSpeed  = 151;
 enum Direction {GO_FORWARD = 'V',  GO_BACKWARD = 'R', TURN_RIGHT = 'T', TURN_LEFT = 'L'};
 
 #define maximum_distance 200
-NewPing sonar(TRIG, ECHO, maximum_distance);
+NewPing sonar_front(TRIG, ECHO, maximum_distance);
 NewPing sonar_left(SONAR_2, SONAR_2, maximum_distance);
 NewPing sonar_right(SONAR_3, SONAR_3, maximum_distance);
 Servo servo_motor;
 
 void updateMotorSpeed(int speed);
 void updateBridgeConfiguration(Direction);
-int  readPing();
 void stopMotors();
 void DoGo(Direction);
 void DoGoWithStepping(Direction);
 void DoProcess(int distance);
 int  lookSide(Direction);
+int  readPingSonar(NewPing);
 
 void setup() {
   servo_motor.attach(servoMOTOR);
@@ -68,25 +68,15 @@ void loop() {
   digitalWrite(TRIG, LOW);
 
   delay(50);
-  int distance = readPing();
+
   Serial.print(">sonar_front:");
-  Serial.println(distance);
+  int distance = readPingSonar(sonar_front);
 
-  int sonarbis=sonar_left.ping_cm();
-  if (sonarbis==0){
-    sonarbis=250;
-  }
   Serial.print(">sonar_left:");
-  Serial.println(sonarbis);
-  distance=min(sonarbis, distance);
+  distance=min(readPingSonar(sonar_left), distance);
 
-  int sonartres=sonar_right.ping_cm();
-  if (sonartres==0){
-    sonartres=250;
-  }
   Serial.print(">sonar_right:");
-  Serial.println(sonartres);
-  distance=min(sonartres, distance);
+  distance=min(readPingSonar(sonar_right), distance);
 
   Serial.print(">distance:");
   Serial.println(distance);
@@ -222,18 +212,18 @@ int lookSide(Direction direction) {
     up(90, 180, 5);
   }
   delay(500);
-  int distance = readPing();
+  int distance = readPingSonar(sonar_front);
   delay(100);
   servo_motor.write(90);
   return distance;
 }
 
-int readPing() {
-  Serial.println("Read ping");
+int readPingSonar(NewPing newping) {
   delay(70);
-  int cm = sonar.ping_cm();
-  if (cm==0){
+  int cm=newping.ping_cm();
+  if (cm==0) {
     cm=250;
   }
+  Serial.println(cm);
   return cm;
 }
