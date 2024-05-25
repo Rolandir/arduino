@@ -1,7 +1,7 @@
 #include <Servo.h>
 #include <NewPing.h>
 
-const int TRIG = A2;
+const int TRIG = A3;
 const int ECHO = A3;
 
 //using the servo.h disables pwm output on pins 9 and 10 when a servo is initalised
@@ -23,13 +23,14 @@ const int minimalSpeed  = 99;
 const int maximalSpeed  = 151;
 
 #define SONAR_2 A5
+#define SONAR_3 A1
 
 enum Direction {GO_FORWARD = 'V',  GO_BACKWARD = 'R', TURN_RIGHT = 'T', TURN_LEFT = 'L'};
-int distance = 100;
 
 #define maximum_distance 200
 NewPing sonar(TRIG, ECHO, maximum_distance);
-NewPing sonar2(SONAR_2, SONAR_2, maximum_distance);
+NewPing sonar_left(SONAR_2, SONAR_2, maximum_distance);
+NewPing sonar_right(SONAR_3, SONAR_3, maximum_distance);
 Servo servo_motor;
 
 void updateMotorSpeed(int speed);
@@ -67,29 +68,40 @@ void loop() {
   digitalWrite(TRIG, LOW);
 
   delay(50);
-  distance = readPing();
-  Serial.print(">Distance:");
+  int distance = readPing();
+  Serial.print(">sonar_front:");
   Serial.println(distance);
 
-  int sonarbis=sonar2.ping_cm();
+  int sonarbis=sonar_left.ping_cm();
   if (sonarbis==0){
     sonarbis=250;
   }
-  Serial.print(">sonar_2:");
+  Serial.print(">sonar_left:");
   Serial.println(sonarbis);
   distance=min(sonarbis, distance);
+
+  int sonartres=sonar_right.ping_cm();
+  if (sonartres==0){
+    sonartres=250;
+  }
+  Serial.print(">sonar_right:");
+  Serial.println(sonartres);
+  distance=min(sonartres, distance);
+
+  Serial.print(">distance:");
+  Serial.println(distance);
 
   DoProcess(distance);
 }
 
 void DoProcess(int distance) {
-  if (distance < 30) {
+  if (distance < 25) {
     int distanceLeft = 0;
     int distanceRight = 0;
     stopMotors();
     delay(50);
     DoGo(GO_BACKWARD);
-    delay(400);
+    delay(501);
     stopMotors();
     delay(50);
     distanceRight = lookSide(TURN_RIGHT);
@@ -114,7 +126,6 @@ void DoProcess(int distance) {
   }
 
   DoGo(GO_FORWARD);
-
 }
 
 void DoGo(Direction direction) {
