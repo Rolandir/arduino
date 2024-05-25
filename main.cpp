@@ -94,13 +94,11 @@ void DoProcess(int distance) {
     delay(501);
     stopMotors();
     delay(50);
-    distanceRight = lookSide(TURN_RIGHT);
     Serial.print(">DistanceRight:");
-    Serial.println(distanceRight);
+    distanceRight = lookSide(TURN_RIGHT);
     delay(200);
-    distanceLeft = lookSide(TURN_LEFT);
     Serial.print(">DistanceLeft:");
-    Serial.println(distanceLeft);  
+    distanceLeft = lookSide(TURN_LEFT);
     delay(300);
     if (distanceRight > distanceLeft && distanceRight > distance) {
       Serial.println("Turn right");
@@ -204,7 +202,6 @@ void up(int from, int to, int step) {
 }
 
 int lookSide(Direction direction) {
-  Serial.println("Look side");
   delay(200);
   if (direction == TURN_RIGHT) {
     down(90, 0, -5);
