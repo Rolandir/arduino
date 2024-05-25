@@ -12,9 +12,9 @@ Arduino project:
 
 1 SG90 servo motor
 
-2 18650 Rechargeable Battery 3.7V
+2 18650 NiMH Battery Rechargeable 3.7V 3000 mAh
 
-2 18650 Li-ion Battery, one holder with a switch on/off
+1 battery holder for 2 18650 with a switch on/off
 
 1 chassis 3D printed with Snapmaker J1S PLA
 
