@@ -19,6 +19,7 @@ const int ECHO = A3;
 #define servoMOTOR      11
 
 #define MAX             250
+#define FRONTIER        33
 
 const int delayUpdateSpeed = 20;
 const int minimalSpeed  = 99;
@@ -69,27 +70,24 @@ void loop() {
   delayMicroseconds(11);
   digitalWrite(TRIG, LOW);
 
-  delay(50);
+  delay(33);
 
   Serial.print(">sonar_front:");
   int distance = readPingSonar(sonar_front);
-
-  Serial.print(">sonar_left:");
-  distance=min(readPingSonar(sonar_left), distance);
-
-  Serial.print(">sonar_right:");
-  distance=min(readPingSonar(sonar_right), distance);
-
-  Serial.print(">distance:");
-  Serial.println(distance);
 
   DoProcess(distance);
 }
 
 void DoProcess(int distance) {
-  if (distance < 30) {
-    int distanceLeft = 0;
-    int distanceRight = 0;
+
+  int r = readPingSonar(sonar_right);
+  Serial.print("R: ");
+  Serial.println(r);
+  int l = readPingSonar(sonar_left);
+  Serial.print("L: ");
+  Serial.println(l);
+
+  if (distance < FRONTIER || r < FRONTIER || l < FRONTIER) {
     stopMotors();
     delay(50);
     DoGo(GO_BACKWARD);
@@ -97,22 +95,27 @@ void DoProcess(int distance) {
     stopMotors();
     delay(50);
     Serial.print(">DistanceRight:");
-    distanceRight = lookSide(TURN_RIGHT);
+    int distanceRight = lookSide(TURN_RIGHT);
+    Serial.println(distanceRight);
     delay(200);
     Serial.print(">DistanceLeft:");
-    distanceLeft = lookSide(TURN_LEFT);
-    delay(300);
-    if (distanceRight > distanceLeft && distanceRight > distance && distanceRight != MAX) {
-      Serial.println("Turn right");
+    int distanceLeft = lookSide(TURN_LEFT);
+    Serial.println(distanceLeft);
+    delay(200);
+
+    if (distanceRight > distanceLeft) {
+      Serial.println("***Turn right");
       updateBridgeConfiguration(TURN_RIGHT);
     }
-    else if (distanceLeft > distance && distanceLeft != MAX) {
-      Serial.println("Turn left");
+    else if (distanceLeft > distanceRight) {
+      Serial.println("***Turn left");
       updateBridgeConfiguration(TURN_LEFT);
-    } else {
-      Serial.println("GO BACK");
+    } 
+    else {
+      Serial.println("***GO BACK");
       updateBridgeConfiguration(GO_BACKWARD);
     }
+
     updateMotorSpeed(maximalSpeed);
     delay(666);
     stopMotors();
@@ -122,8 +125,11 @@ void DoProcess(int distance) {
 }
 
 void DoGo(Direction direction) {
-  Serial.print("DoGo ");
-  Serial.println((char)direction);
+  Serial.print("*****DoGo ");
+  if (direction == GO_FORWARD) Serial.println("F");
+  else if (direction == GO_BACKWARD) Serial.println("B");
+  else if (direction == TURN_RIGHT) Serial.println("R");
+  else if (direction == TURN_LEFT) Serial.println("L");
   updateBridgeConfiguration(direction);
   updateMotorSpeed(minimalSpeed);
 }
@@ -223,11 +229,10 @@ int lookSide(Direction direction) {
 int readPingSonar(NewPing newping) {
   delay(70);
   int cm=newping.ping_cm();
-  /*
+
   if (cm==0) {
     cm=MAX;
   }
-  */
-  Serial.println(cm);
+
   return cm;
 }
