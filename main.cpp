@@ -18,6 +18,8 @@ const int ECHO = A3;
 
 #define servoMOTOR      11
 
+#define MAX             250
+
 const int delayUpdateSpeed = 20;
 const int minimalSpeed  = 99;
 const int maximalSpeed  = 151;
@@ -25,7 +27,7 @@ const int maximalSpeed  = 151;
 #define SONAR_2 A5
 #define SONAR_3 A1
 
-enum Direction {GO_FORWARD = 'V',  GO_BACKWARD = 'R', TURN_RIGHT = 'T', TURN_LEFT = 'L'};
+enum Direction {GO_FORWARD = 'F',  GO_BACKWARD = 'B', TURN_RIGHT = 'R', TURN_LEFT = 'L'};
 
 #define maximum_distance 200
 NewPing sonar_front(TRIG, ECHO, maximum_distance);
@@ -85,7 +87,7 @@ void loop() {
 }
 
 void DoProcess(int distance) {
-  if (distance < 25) {
+  if (distance < 30) {
     int distanceLeft = 0;
     int distanceRight = 0;
     stopMotors();
@@ -100,13 +102,16 @@ void DoProcess(int distance) {
     Serial.print(">DistanceLeft:");
     distanceLeft = lookSide(TURN_LEFT);
     delay(300);
-    if (distanceRight > distanceLeft && distanceRight > distance) {
+    if (distanceRight > distanceLeft && distanceRight > distance && distanceRight != MAX) {
       Serial.println("Turn right");
       updateBridgeConfiguration(TURN_RIGHT);
     }
-    else if (distanceLeft > distance) {
+    else if (distanceLeft > distance && distanceLeft != MAX) {
       Serial.println("Turn left");
       updateBridgeConfiguration(TURN_LEFT);
+    } else {
+      Serial.println("GO BACK");
+      updateBridgeConfiguration(GO_BACKWARD);
     }
     updateMotorSpeed(maximalSpeed);
     delay(666);
@@ -218,9 +223,11 @@ int lookSide(Direction direction) {
 int readPingSonar(NewPing newping) {
   delay(70);
   int cm=newping.ping_cm();
+  /*
   if (cm==0) {
-    cm=250;
+    cm=MAX;
   }
+  */
   Serial.println(cm);
   return cm;
 }
